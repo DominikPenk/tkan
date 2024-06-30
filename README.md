@@ -38,6 +38,15 @@ While we have not implemented the B-Spline layer proposed in the paper, we imple
 The library was constructed with ease of implementation of new layer types in mind. 
 In the [custom layer notebook](notebooks/custom_layer.ipynb) we demonstrate how to do this.
 
+## Open TODOs:
+
+This project was intended as a small week-long side project, and there are some features and improvements I could not fit into this time span. If I revisit this project, these will be my next priorities:
+- [ ] **Implement B-Spline Layer**: Integrate the B-Spline layer as described in the original paper
+- [ ] **Run Benchmarks**: Conduct benchmarks for the different KAN layers to evaluate performance
+- [ ] **Enhance Initialization Utilities**: Develop and integrate better initialization utilities
+- [ ] **Improve Plotting Code**: Refactor and enhance the plotting code for easier customization.
+- [ ] **Degree Elevation/Degradation Utilities**: Implement utilities for degree elevation and degradation in Polynomial layers
+
 ## References and similar projects:
 
 I wrote this repository to get a deeper understanding of the KAN paper [1]() by Ziming Lui et al. and therefore, the code is strongly related to [their original repository](https://github.com/KindXiaoming/pykan).
