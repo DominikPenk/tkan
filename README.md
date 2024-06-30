@@ -40,7 +40,7 @@ In the [custom layer notebook](notebooks/custom_layer.ipynb) we demonstrate how 
 
 ## Open TODOs:
 
-This project was intended as a small week-long side project, and there are some features and improvements I could not fit into this time span. If I revisit this project, these will be my next priorities:
+This implementation was intended as a small week-long side project, and there are some features and improvements I could not fit into this time span. If I revisit this project, these will be my next priorities:
 - [ ] **Implement B-Spline Layer**: Integrate the B-Spline layer as described in the original paper
 - [ ] **Run Benchmarks**: Conduct benchmarks for the different KAN layers to evaluate performance
 - [ ] **Enhance Initialization Utilities**: Develop and integrate better initialization utilities
