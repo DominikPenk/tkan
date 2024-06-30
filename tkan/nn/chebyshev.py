@@ -1,7 +1,7 @@
 import math
 
 import torch
-from .base import PolynomialKanLinear
+from .base import PolynomialKan
 
 
 def chebyshev_t_polynomials(x:torch.Tensor, n:int, min_order:int = 0) -> torch.Tensor:
@@ -14,7 +14,7 @@ def chebyshev_t_polynomials(x:torch.Tensor, n:int, min_order:int = 0) -> torch.T
     return torch.stack(Ps[min_order:], dim=-1)
 
 
-class ChebyshevKanLinear(PolynomialKanLinear):
+class ChebyshevKan(PolynomialKan):
     def get_initial_control_points(self) -> torch.Tensor:
         control_points = torch.empty(self.out_features, self.in_features, self.order)
         sqrt_k = math.sqrt(1.0 / self.in_features)

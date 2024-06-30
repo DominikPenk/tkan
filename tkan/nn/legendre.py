@@ -3,7 +3,7 @@ import math
 import torch
 import torch.nn as nn
 
-from .base import PolynomialKanLinear
+from .base import PolynomialKan
 
 LEGENDRE_POLYNOMIALS = [
     lambda x: torch.ones_like(x),
@@ -32,7 +32,7 @@ def legendre_polynomials(x:torch.Tensor, order:int, min_order:int=0) -> torch.Te
     return torch.stack(Ps[min_order:], dim=-1)
 
 
-class LegendreKanLinear(PolynomialKanLinear):
+class LegendreKan(PolynomialKan):
     def get_initial_control_points(self) -> torch.Tensor:
         control_points = torch.empty(self.out_features, self.in_features, self.order).normal_(0, 0.1)
         sqrt_k = math.sqrt(1.0 / self.in_features)

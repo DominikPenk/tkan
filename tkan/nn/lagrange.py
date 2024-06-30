@@ -9,7 +9,7 @@ import scipy.special
 import torch
 import torch.nn as nn
 
-from .base import KanLinearBase
+from .base import KanLayerBase
 
 
 def sample_domain(
@@ -35,7 +35,7 @@ def get_fixed_barycentric_weights(method: Literal["linear", "chebyshev"], num_no
         wj[[0, -1]] *= 0.5
         return wj
     
-class LagrangeKanLayer(KanLinearBase):
+class LagrangeKan(KanLayerBase):
     def __init__(
         self,
         in_features: int,
@@ -63,8 +63,8 @@ class LagrangeKanLayer(KanLinearBase):
         self.control_points = nn.Parameter(_control_points)
 
 
-    def get_pruned(self, in_features: list[int], out_features: list[int]) -> LagrangeKanLayer:
-        layer = LagrangeKanLayer(
+    def get_pruned(self, in_features: list[int], out_features: list[int]) -> LagrangeKan:
+        layer = LagrangeKan(
             in_features=len(in_features),
             out_features=len(out_features),
             nodes=self.num_nodes
@@ -113,7 +113,7 @@ class LagrangeKanLayer(KanLinearBase):
             color=color
         )
     
-class FixedNodesLagrangeKanLayer(KanLinearBase):
+class FixedNodesLagrangeKan(KanLayerBase):
     def __init__(
         self,
         in_features: int,
@@ -162,8 +162,8 @@ class FixedNodesLagrangeKanLayer(KanLinearBase):
         )
         return (self._wj / deltas * self.control_points).sum(dim=-1) / (self._wj / deltas).sum(dim=-1)
 
-    def get_pruned(self, in_features: list[int], out_features: list[int]) -> KanLinearBase:
-        layer = FixedNodesLagrangeKanLayer(
+    def get_pruned(self, in_features: list[int], out_features: list[int]) -> KanLayerBase:
+        layer = FixedNodesLagrangeKan(
             in_features=len(in_features),
             out_features=len(out_features),
             nodes=self.num_nodes

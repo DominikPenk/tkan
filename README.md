@@ -24,8 +24,8 @@ import torch.nn as nn
 import tkan.nn as tnn
 
 kan = nn.Sequential(
-    tnn.HermiteKanLinear(5, 3, order=4),
-    tnn.HermiteKanLinear(3, 1, order=3),
+    tnn.HermiteKan(5, 3, order=4),
+    tnn.HermiteKan(3, 1, order=3),
 )
 ```
 

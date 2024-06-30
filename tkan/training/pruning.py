@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 
 from .activations_tracker import ActivationsTracker
-from ..nn.base import KanLinearBase
+from ..nn.base import KanLayerBase
 
 def prune_from_data(
     model:nn.Sequential,
@@ -22,14 +22,14 @@ def prune_from_data(
         nn.Sequential: The pruned model.
 
     Raises:
-        ValueError: If the model is not a nn.Sequential or if any layer is not a KanLinearBase.
+        ValueError: If the model is not a nn.Sequential or if any layer is not a KanLayerBase.
     """
         
     # Make sure all layers are Kan-layers
     if not isinstance(model, nn.Sequential):
         raise ValueError("Module must be a nn.Sequential")
     
-    if not all(isinstance(layer, KanLinearBase) for layer in model):
+    if not all(isinstance(layer, KanLayerBase) for layer in model):
         raise ValueError("All layers must be Kan-layers")
     
 
@@ -59,7 +59,7 @@ def prune_from_activations(
     if not isinstance(model, nn.Sequential):
         raise ValueError("Module must be a nn.Sequential")
     
-    if not all(isinstance(layer, KanLinearBase) for layer in model):
+    if not all(isinstance(layer, KanLayerBase) for layer in model):
         raise ValueError("All layers must be Kan-layers")
     
     # Ensure that activations match the model
@@ -75,7 +75,7 @@ def prune_from_activations(
     
     active_nodes = []
     for layer_id in range(len(model) - 1):
-        layer:KanLinearBase = model[layer_id]
+        layer:KanLayerBase = model[layer_id]
         if layer.out_features == 1:
             continue
         L1_in:torch.Tensor  = activations[layer_id].abs().mean(dim=0).max(dim=-1).values
@@ -93,7 +93,7 @@ def prune_from_activations(
     # We cannot remove nodes from the final (output) layer
     active_nodes.append([i for i in range(model[-1].out_features)])
 
-    pruned_layers:list[KanLinearBase] = []
+    pruned_layers:list[KanLayerBase] = []
     for layer_id, layer in enumerate(model):
         out_features = active_nodes[layer_id] if layer_id < len(model) - 1 else [i for i in range(layer.out_features)]
         in_features = active_nodes[layer_id - 1] if layer_id > 0 else [i for i in range(layer.in_features)]

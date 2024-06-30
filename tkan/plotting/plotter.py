@@ -9,7 +9,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from ..nn.base import KanLinearBase
+from ..nn.base import KanLayerBase
 from ..training import ActivationsTracker
 from .connections import ConnectionDrawer, get_connection_drawer, ConnectionTypeOptions
 from .nodes import (NodeDrawer, NodePositioner, NodePositionOptions,
@@ -75,7 +75,7 @@ class KanPlotter:
 
     def __call__(
         self, 
-        model:nn.Sequential | KanLinearBase,
+        model:nn.Sequential | KanLayerBase,
         *,
         sample_inputs:Optional[torch.Tensor] = None,
         ax:Optional[plt.Axes] = None,
@@ -84,7 +84,7 @@ class KanPlotter:
         Visualize structure and activations of a KAN model.
 
         Args:
-            model (nn.Sequential | KanLinearBase): The model or single KAN layer to visualize.
+            model (nn.Sequential | KanLayerBase): The model or single KAN layer to visualize.
             sample_inputs (Optional[torch.Tensor], optional): The input tensor to use for tracking activations. Defaults to None.
             ax (Optional[plt.Axes], optional): The matplotlib axes to plot on. If None, the current axes will be used. Defaults to None.
 
@@ -94,14 +94,14 @@ class KanPlotter:
         Raises:
             ValueError: If the model is not a nn.Sequential, KAN layer or if it contains layers that are not Kan-layers.
         """
-        if isinstance(model, KanLinearBase):
+        if isinstance(model, KanLayerBase):
             model = nn.Sequential(model)
 
         # Check that model is a Sequential model with only Kan layers
         if not isinstance(model, nn.Sequential):
             raise ValueError("Model must be a nn.Sequential")
         
-        if not all(isinstance(layer, KanLinearBase) for layer in model):
+        if not all(isinstance(layer, KanLayerBase) for layer in model):
             raise ValueError("All layers must be Kan-layers")
 
         ax = ax or plt.gca()

@@ -2,15 +2,15 @@ import unittest
 
 import torch
 
-from tkan.nn import (ChebyshevKanLinear, FixedNodesLagrangeKanLayer,
-                         HermiteKanLinear, LagrangeKanLayer, LegendreKanLinear)
+from tkan.nn import (ChebyshevKan, FixedNodesLagrangeKan,
+                         HermiteKan, LagrangeKan, LegendreKan)
 
 from tkan.training.pruning import prune_from_data, prune_from_activations
 
 
 class Test_TestLayerPruning(unittest.TestCase):
-    def test_LagrangeKanLayer(self):
-        layer = LagrangeKanLayer(3, 4)
+    def test_LagrangeKan(self):
+        layer = LagrangeKan(3, 4)
         in_features = [0, 2]
         out_features = [1, 3, 0]
         pruned = layer.get_pruned(in_features, out_features)
@@ -21,8 +21,8 @@ class Test_TestLayerPruning(unittest.TestCase):
         y = pruned(x)
         self.assertEqual(y.shape, (128, len(out_features)))
 
-    def test_FixedNodesLagrangeKanLayer(self):
-        layer = FixedNodesLagrangeKanLayer(3, 4)
+    def test_FixedNodesLagrangeKan(self):
+        layer = FixedNodesLagrangeKan(3, 4)
         in_features = [0, 2]
         out_features = [1, 3, 0]
         pruned = layer.get_pruned(in_features, out_features)
@@ -33,8 +33,8 @@ class Test_TestLayerPruning(unittest.TestCase):
         y = pruned(x)
         self.assertEqual(y.shape, (128, len(out_features)))
 
-    def test_ChebyshevKanLinear(self):
-        layer = ChebyshevKanLinear(3, 4)
+    def test_ChebyshevKan(self):
+        layer = ChebyshevKan(3, 4)
         in_features = [0, 2]
         out_features = [1, 3, 0]
         pruned = layer.get_pruned(in_features, out_features)
@@ -45,8 +45,8 @@ class Test_TestLayerPruning(unittest.TestCase):
         y = pruned(x)
         self.assertEqual(y.shape, (128, len(out_features)))
 
-    def test_LegendreKanLinear(self):
-        layer = LegendreKanLinear(3, 4)
+    def test_LegendreKan(self):
+        layer = LegendreKan(3, 4)
         in_features = [0, 2]
         out_features = [1, 3, 0]
         pruned = layer.get_pruned(in_features, out_features)
@@ -57,8 +57,8 @@ class Test_TestLayerPruning(unittest.TestCase):
         y = pruned(x)
         self.assertEqual(y.shape, (128, len(out_features)))
 
-    def test_HermiteKanLinear(self):
-        layer = HermiteKanLinear(3, 4)
+    def test_HermiteKan(self):
+        layer = HermiteKan(3, 4)
         in_features = [0, 2]
         out_features = [1, 3, 0]
         pruned = layer.get_pruned(in_features, out_features)
@@ -72,10 +72,10 @@ class Test_TestPruningMethods(unittest.TestCase):
     def test_raise_error_on_non_sequential(self):
         class CustomNet:
             def __init__(self):
-                self.l1 = LagrangeKanLayer(3, 4)
-                self.l2 = LagrangeKanLayer(4, 5)
-                self.l3 = LagrangeKanLayer(5, 6)
-                self.l4 = LagrangeKanLayer(6, 7)
+                self.l1 = LagrangeKan(3, 4)
+                self.l2 = LagrangeKan(4, 5)
+                self.l3 = LagrangeKan(5, 6)
+                self.l4 = LagrangeKan(6, 7)
             
             def forward(self, x):
                 x = self.l1(x)
@@ -88,27 +88,27 @@ class Test_TestPruningMethods(unittest.TestCase):
 
     def test_raises_error_on_non_kan_layers(self):
         net = torch.nn.Sequential(
-            LagrangeKanLayer(3, 4),
+            LagrangeKan(3, 4),
             torch.nn.Linear(4, 2),
-            LagrangeKanLayer(2, 1)
+            LagrangeKan(2, 1)
         )
         with self.assertRaises(ValueError):
             prune_from_data(net, torch.rand((128, 3)))
 
     def test_output_is_new_model(self):
         net = torch.nn.Sequential(
-            LagrangeKanLayer(3, 4),
-            LagrangeKanLayer(4, 1),
-            LagrangeKanLayer(1, 1)
+            LagrangeKan(3, 4),
+            LagrangeKan(4, 1),
+            LagrangeKan(1, 1)
         )
         pruned = prune_from_data(net, torch.rand((128, 3)))
         self.assertNotEqual(net, pruned)
 
     def test_input_is_same_or_smaller(self):
         net = torch.nn.Sequential(
-            LagrangeKanLayer(3, 4),
-            LagrangeKanLayer(4, 1),
-            LagrangeKanLayer(1, 1)
+            LagrangeKan(3, 4),
+            LagrangeKan(4, 1),
+            LagrangeKan(1, 1)
         )
         pruned = prune_from_data(net, torch.rand((128, 3)))
 
@@ -121,8 +121,8 @@ class Test_TestPruningMethods(unittest.TestCase):
 
     def test_pruning_by_activations(self):
         net = torch.nn.Sequential(
-            LagrangeKanLayer(2, 3),
-            LagrangeKanLayer(3, 1)
+            LagrangeKan(2, 3),
+            LagrangeKan(3, 1)
         )
 
         activations_layer_1 = torch.cat([
@@ -147,8 +147,8 @@ class Test_TestPruningMethods(unittest.TestCase):
 
     def test_multiple_batch_dimensions(self):
         net = torch.nn.Sequential(
-            LagrangeKanLayer(2, 3),
-            LagrangeKanLayer(3, 1)
+            LagrangeKan(2, 3),
+            LagrangeKan(3, 1)
         )
 
         activations_layer_1 = torch.cat([

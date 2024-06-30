@@ -2,14 +2,14 @@ import unittest
 
 import torch
 
-from tkan.nn import ChebyshevKanLinear, HermiteKanLinear, LegendreKanLinear
-from tkan.nn.base import KanLinearBase, PolynomialKanLinear
+from tkan.nn import ChebyshevKan, HermiteKan, LegendreKan
+from tkan.nn.base import KanLayerBase, PolynomialKan
 from tkan.nn.init import init_with_non_linearity
 
 
 class Test_TestInitWithNonLinearity(unittest.TestCase):
     def test_init_custom_layer(self):
-        class TestLayer(KanLinearBase):
+        class TestLayer(KanLayerBase):
             def __init__(self, in_features, out_features):
                 super().__init__(in_features, out_features)
                 self.scales = torch.nn.Parameter(torch.ones(out_features, in_features))
@@ -28,9 +28,9 @@ class Test_TestInitWithNonLinearity(unittest.TestCase):
 
     def test_init_polynomial_layer(self):
         layer_classes = [
-            ChebyshevKanLinear,
-            HermiteKanLinear,
-            LegendreKanLinear
+            ChebyshevKan,
+            HermiteKan,
+            LegendreKan
         ]
 
         non_linearity = lambda x: x
@@ -38,7 +38,7 @@ class Test_TestInitWithNonLinearity(unittest.TestCase):
 
         for layer_class in layer_classes:
             with self.subTest(layer_class=layer_class.__name__):
-                layer:PolynomialKanLinear = layer_class(3, 4, order=4)
+                layer:PolynomialKan = layer_class(3, 4, order=4)
                 mse = init_with_non_linearity(layer, non_linearity, domain)
                 self.assertLess(mse, 1e-3)
 

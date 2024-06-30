@@ -3,11 +3,11 @@ from typing import Callable
 
 import torch
 
-from .base import KanLinearBase, PolynomialKanLinear
+from .base import KanLayerBase, PolynomialKan
 
 
 def init_with_non_linearity(
-    layer:KanLinearBase, 
+    layer:KanLayerBase, 
     non_linearity:Callable[[torch.Tensor], torch.Tensor],
     domain:tuple[int, int]=(-1, 1)
 ) -> float:
@@ -29,7 +29,7 @@ def init_with_non_linearity(
         - If the layer supports the `init_with_non_linearity` method, it is called directly.
         - If the layer does not support the `init_with_non_linearity` method, the initialization is done via gradient descent.
     """
-    if not isinstance(layer, KanLinearBase):
+    if not isinstance(layer, KanLayerBase):
         raise TypeError(f"Layer must be of type KanLinearBase, got {type(layer)}")
     
     try:

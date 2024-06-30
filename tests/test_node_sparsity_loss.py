@@ -4,15 +4,15 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from tkan.nn import LagrangeKanLayer
+from tkan.nn import LagrangeKan
 from tkan.training import KanNodeSparsityLoss, kan_node_sparsity_loss
 
 
 class Test_TestNodeSparsityLoss(unittest.TestCase):
     def setUp(self) -> None:
         self.net = nn.Sequential(
-            LagrangeKanLayer(2, 3),
-            LagrangeKanLayer(3, 1)
+            LagrangeKan(2, 3),
+            LagrangeKan(3, 1)
         )
 
     def test_functional_loss_output_shapes(self):

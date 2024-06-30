@@ -7,11 +7,11 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from ..nn.base import KanLinearBase
+from ..nn.base import KanLayerBase
 from .plotter import KanPlotter
 
 def plot_kan(
-    model:nn.Sequential | KanLinearBase,
+    model:nn.Sequential | KanLayerBase,
     *,
     sample_inputs:torch.Tensor | None = None,
     ax:plt.Axes | None = None,
@@ -21,7 +21,7 @@ def plot_kan(
     Plots the KAN model using a KanPlotter.
 
     Args:
-        model (nn.Sequential | KanLinearBase): The KAN model to be plotted.
+        model (nn.Sequential | KanLayerBase): The KAN model to be plotted.
         sample_inputs (torch.Tensor | None): Optional sample inputs to the model.
         ax (plt.Axes | None): Optional axes to plot on.
         **plotting_args: Additional keyword arguments for plotting.

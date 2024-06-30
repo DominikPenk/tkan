@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 
 from .activations_tracker import ActivationsTracker
-from ..nn.base import KanLinearBase
+from ..nn.base import KanLayerBase
 
 def kan_node_sparsity_loss(phi:torch.Tensor, eps:float|None=None) -> tuple[torch.Tensor, torch.Tensor]:
     phi = phi.view(-1, *phi.shape[-2:])
@@ -45,8 +45,8 @@ class KanLayerRegularizationLoss:
         self,
         module:nn.Module,
     ) -> None:
-        self._layers:list[KanLinearBase] = [
-            layer for layer in module.modules() if isinstance(layer, KanLinearBase)
+        self._layers:list[KanLayerBase] = [
+            layer for layer in module.modules() if isinstance(layer, KanLayerBase)
         ]
 
     def compute(self) -> torch.Tensor:

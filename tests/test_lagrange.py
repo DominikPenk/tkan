@@ -2,19 +2,19 @@ import unittest
 
 import torch
 
-from tkan.nn import LagrangeKanLayer, FixedNodesLagrangeKanLayer
+from tkan.nn import LagrangeKan, FixedNodesLagrangeKan
 
 
 class Test_TestLagrangeKanLayer(unittest.TestCase):
     def test_output_shape(self):
-        layer = LagrangeKanLayer(in_features=3, out_features=4, nodes=5)
+        layer = LagrangeKan(in_features=3, out_features=4, nodes=5)
         input = torch.randn(32, 3)
         output = layer(input)
         self.assertEqual(output.shape, (32, 4))
 
     @torch.inference_mode()
     def test_multiple_batch_dimensioins(self):
-        layer = LagrangeKanLayer(in_features=7, out_features=1, nodes=4)
+        layer = LagrangeKan(in_features=7, out_features=1, nodes=4)
         input = torch.randn(128, 128, 7)
         output = layer(input)
         self.assertEqual(output.shape, (128, 128, 1))
@@ -22,7 +22,7 @@ class Test_TestLagrangeKanLayer(unittest.TestCase):
     def test_node_positions_linear(self):
         start = -12
         end = 42
-        layer = LagrangeKanLayer(
+        layer = LagrangeKan(
             in_features=3, 
             out_features=4, 
             nodes=5, 
@@ -33,7 +33,7 @@ class Test_TestLagrangeKanLayer(unittest.TestCase):
         self.assertTrue(torch.allclose(layer.nodes, nodes))
 
     def test_interpolation_property(self):
-        layer = LagrangeKanLayer(in_features=1, out_features=1, nodes=5)
+        layer = LagrangeKan(in_features=1, out_features=1, nodes=5)
         input = layer.nodes[0].transpose(1, 0)
         output:torch.Tensor = layer(input)
         all_close = torch.allclose(
@@ -45,14 +45,14 @@ class Test_TestLagrangeKanLayer(unittest.TestCase):
 
 class Test_TestFixedNodesLayer(unittest.TestCase):
     def test_output_shape(self):
-        layer = FixedNodesLagrangeKanLayer(in_features=3, out_features=4, nodes=5)
+        layer = FixedNodesLagrangeKan(in_features=3, out_features=4, nodes=5)
         input = torch.randn(32, 3)
         output = layer(input)
         self.assertEqual(output.shape, (32, 4))
 
     @torch.inference_mode()
     def test_multiple_batch_dimensioins(self):
-        layer = LagrangeKanLayer(in_features=7, out_features=1, nodes=4)
+        layer = LagrangeKan(in_features=7, out_features=1, nodes=4)
         input = torch.randn(128, 128, 7)
         output = layer(input)
         self.assertEqual(output.shape, (128, 128, 1))
@@ -60,7 +60,7 @@ class Test_TestFixedNodesLayer(unittest.TestCase):
     def test_node_positions_linear(self):
         start = -12
         end = 42
-        layer = FixedNodesLagrangeKanLayer(
+        layer = FixedNodesLagrangeKan(
             in_features=3, 
             out_features=4, 
             nodes=5, 
@@ -71,7 +71,7 @@ class Test_TestFixedNodesLayer(unittest.TestCase):
         self.assertTrue(torch.allclose(layer.nodes, nodes))
 
     def test_interpolation_property(self):
-        layer = FixedNodesLagrangeKanLayer(in_features=1, out_features=1, nodes=5)
+        layer = FixedNodesLagrangeKan(in_features=1, out_features=1, nodes=5)
         input = layer.nodes[0].transpose(1, 0)
         output:torch.Tensor = layer(input)
         all_close = torch.allclose(

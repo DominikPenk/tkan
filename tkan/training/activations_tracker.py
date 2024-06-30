@@ -6,11 +6,11 @@ import torch
 import torch.nn as nn
 from torch.utils.hooks import RemovableHandle
 
-from ..nn.base import KanLinearBase
+from ..nn.base import KanLayerBase
 
 
 def _track_activations(
-    layer:KanLinearBase,
+    layer:KanLayerBase,
     inputs:list[torch.Tensor],
     tracker:ActivationsTracker
 ) -> None:
@@ -24,7 +24,7 @@ class ActivationsTracker(object):
         module:nn.Module | None = None,
         track_only_during_training:bool=True
     ) -> None:
-        self._tracked_layers:list[KanLinearBase] = []
+        self._tracked_layers:list[KanLayerBase] = []
         self._hook_handles:dict[RemovableHandle]   = {}
         self._activations:dict[int, torch.Tensor]  = {}
         self.track_always = not track_only_during_training
@@ -35,7 +35,7 @@ class ActivationsTracker(object):
               
     def add_module(self, module:nn.Module, register_hooks:bool = False) -> None:
         for layer in module.modules():
-            if isinstance(layer, KanLinearBase):
+            if isinstance(layer, KanLayerBase):
                 self._tracked_layers.append(layer)
 
                 if register_hooks:
@@ -58,7 +58,7 @@ class ActivationsTracker(object):
     def get_activations(self) -> list[torch.Tensor]:
         return list(self._activations.values())
     
-    def get_activation(self, layer:KanLinearBase) -> torch.Tensor:
+    def get_activation(self, layer:KanLayerBase) -> torch.Tensor:
         if id(layer) not in self._activations:
             raise KeyError(f"Layer is not tracked")
         return self._activations[id(layer)]

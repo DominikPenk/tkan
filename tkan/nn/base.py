@@ -7,7 +7,7 @@ import torch.nn.functional as F
 
 import matplotlib.pyplot as plt
 
-class KanLinearBase(nn.Module):
+class KanLayerBase(nn.Module):
     def __init__(
         self,
         in_features: int,
@@ -39,7 +39,7 @@ class KanLinearBase(nn.Module):
     def regularization_loss(self) -> torch.Tensor:
         return torch.tensor(0.0, device=next(self.parameters()).device, dtype=torch.float32)
 
-    def get_pruned(self, in_features: list[int], out_features: list[int]) -> 'KanLinearBase':
+    def get_pruned(self, in_features: list[int], out_features: list[int]) -> 'KanLayerBase':
         """Return a smaller Layer with only the given in and out features.
         
         Args:
@@ -87,7 +87,7 @@ class KanLinearBase(nn.Module):
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}[{self.in_features}, {self.out_features}]"
 
-class PolynomialKanLinear(KanLinearBase):
+class PolynomialKan(KanLayerBase):
     def __init__(
         self,
         in_features:int,
@@ -121,7 +121,7 @@ class PolynomialKanLinear(KanLinearBase):
     def regularization_loss(self) -> torch.Tensor:
         return self.control_points[..., :].abs().sum()
     
-    def get_pruned(self, in_features: list[int], out_features: list[int]) -> 'PolynomialKanLinear':
+    def get_pruned(self, in_features: list[int], out_features: list[int]) -> 'PolynomialKan':
         cls = self.__class__
         layer = cls(
             in_features=len(in_features),

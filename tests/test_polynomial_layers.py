@@ -2,8 +2,8 @@ import unittest
 
 import torch
 
-from tkan.nn.base import KanLinearBase
-from tkan.nn import ChebyshevKanLinear, HermiteKanLinear, LegendreKanLinear
+from tkan.nn.base import KanLayerBase
+from tkan.nn import ChebyshevKan, HermiteKan, LegendreKan
 
 
 class BasePolynomialLayerTest:
@@ -61,14 +61,14 @@ class BasePolynomialLayerTest:
 
 class Test_TestChebyshevLayer(BasePolynomialLayerTest.BaseTest):
     def setUp(self) -> None:
-        self.layer = ChebyshevKanLinear(in_features=3, out_features=4, order=5).eval()
+        self.layer = ChebyshevKan(in_features=3, out_features=4, order=5).eval()
 
 class Test_TestHermiteLayer(BasePolynomialLayerTest.BaseTest):
     def setUp(self) -> None:
-        self.layer = HermiteKanLinear(in_features=3, out_features=4, order=5).eval()
+        self.layer = HermiteKan(in_features=3, out_features=4, order=5).eval()
 
 
 class Test_TestLegendreLayer(BasePolynomialLayerTest.BaseTest):
     def setUp(self) -> None:
-        self.layer = LegendreKanLinear(in_features=3, out_features=4, order=5).eval()
+        self.layer = LegendreKan(in_features=3, out_features=4, order=5).eval()
         

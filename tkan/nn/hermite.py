@@ -2,7 +2,7 @@ import math
 
 import torch
 import torch.nn as nn
-from .base import PolynomialKanLinear
+from .base import PolynomialKan
 
 
 def hermite_polynomials(x:torch.Tensor, n:int, min_order:int = 0) -> torch.Tensor:
@@ -15,7 +15,7 @@ def hermite_polynomials(x:torch.Tensor, n:int, min_order:int = 0) -> torch.Tenso
     return torch.stack(Ps[min_order:], dim=-1)
 
 
-class HermiteKanLinear(PolynomialKanLinear):
+class HermiteKan(PolynomialKan):
     def get_initial_control_points(self) -> torch.Tensor:
         control_points = torch.zeros(self.out_features, self.in_features, self.order)
         sqrt_k = math.sqrt(1.0 / self.in_features)

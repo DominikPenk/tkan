@@ -3,18 +3,18 @@ import unittest
 import torch
 import torch.nn as nn
 
-from tkan.nn import HermiteKanLinear, LagrangeKanLayer
+from tkan.nn import HermiteKan, LagrangeKan
 from tkan.training import ActivationsTracker
 
 class Test_TestActivationsTracker(unittest.TestCase):
     def setUp(self) -> None:
         inner = nn.Sequential(
-            HermiteKanLinear(5, 3),
+            HermiteKan(5, 3),
             nn.Linear(3, 2),
-            LagrangeKanLayer(2, 3)
+            LagrangeKan(2, 3)
         )
         self.net = nn.Sequential(
-            HermiteKanLinear(2, 4),
+            HermiteKan(2, 4),
             nn.Linear(4, 5),
             nn.ReLU(),
             inner
