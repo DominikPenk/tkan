@@ -11,7 +11,7 @@ pip install git+https://github.com/DominikPenk/tkan.git
 
 Alternatively, you can first clone the repository and then install from the local copy:
 ```bash
-git clone https://github.com/fepegar/tkan.git
+git clone https://github.com/DominikPenk/tkan.git
 cd tkan
 pip install -e .
 ```
