@@ -6,7 +6,7 @@ TKan is a project implementing an easily extendable KAN layer for PyTorch. The l
 
 Right now, there is no pip distribution of this library. However, you can directly install from this git repository:
 ```bash
-pip install git+https://github.com/fepegar/tkan.git
+pip install git+https://github.com/DominikPenk/tkan.git
 ```
 
 Alternatively, you can first clone the repository and then install from the local copy:
